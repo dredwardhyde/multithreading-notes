@@ -94,7 +94,6 @@
 
 ## x86_64 memory barriers:
    - LFENCE (Load Fence / combines LoadLoad & LoadStore barriers):
-     - **movl (sp),&lt;r&gt;**
      - Prevents reordering of reads with subsequent reads and writes
      - Stalls the execution of all younger loads until the older ones (and the fence itself)  
        have finished and committed. This will affect performance by serializing the loads,  
@@ -107,6 +106,6 @@
        (that's why they're fencing). Once they changes are in L1 they're already observable  
        by anyone, they don't have to be flushed anywhere further away
        
-   - MFENCE:
+   - MFENCE (Full Fence / LoadStore & StoreStore & LoadLoad & StoreLoad barriers):
      - **lock addl 0,(sp)**
      - Full memory fence for all operations on all memory types, whether non-temporal or not
