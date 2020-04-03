@@ -112,4 +112,4 @@ That's where MESI protocol is used for.
 Well, as you can see, there are a lot of things must happen to write single value to RAM, but do we really need it? What if cpu core wants to update variable many times and only last value must be promoted to RAM? Store buffers were designed exactly for this situation.
 But we have JLS, JMM and all other stuff that tells us about happens-before, volatile variables behavior. How can we be sure that all visibility rules are strictly followed under all circumstances?
 
-**Well, let's dig deep into the Hotspot sources to find out how it works!**
+**Let's dig deep into the Hotspot sources to find out how it works!**
