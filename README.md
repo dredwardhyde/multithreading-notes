@@ -1,4 +1,4 @@
-# How 'volatile' works on hardware level?
+# How 'volatile' works on JVM level?
 
 First of all, let's talk about how modern processors work.
 According to Intel's manual for software developers, modern processors have one interesing detail that directly affects visibility of data written to RAM:  
