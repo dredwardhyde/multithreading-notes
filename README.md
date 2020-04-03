@@ -145,5 +145,28 @@ Here is our **putfield** opcode!
 Actually, static and non-static fields are written using the same method **putfield_or_static**:  
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/5.PNG" width="600"/>
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/5.PNG" width="700"/>
 </p>
+
+Here is method **putfield_or_static** itself. As you can see, in line 3131 we test if target field is volatile and then continue execution through lines **3134** and **3135** if answer is yes, or jump to label **nonVolatile** and go through line **3140**:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/6.PNG" width="700"/>
+</p>
+
+In line **3135** from previous screenshot we see that function **volatile_barrier** is called:    
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/7.PNG" width="700"/>
+</p>
+
+And then, finally, we found our **membar** function that emits magic assembly code that ensures adherence to Java specifications:  
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/8.PNG" width="700"/>
+</p>
+
+This function emits string like **lock addl [rsp + #0]**. But why it works? Turns out, according to the same Intel specs, locked instructions provide total order:
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/Screenshot%202019-09-07%20at%2019.55.42.png" width="700"/>
+</p>
+
+So, write to **volatile** field compiles to **putfield** opcode, then JVM interpreter translates this opcode to assembly snippet that contains instruction **lock addl [rsp + #0]** which, according to Intel specs, provides total order by draining store buffer to L1 cache, whose content is synchronized with other core's caches, shared caches, and RAM, by MESI protocol.
