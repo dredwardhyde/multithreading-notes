@@ -1,6 +1,18 @@
-# How volatile works on hardware level?
+# How 'volatile' works on hardware level?
 
-### Protocol MESI explained:
+First of all, let's talk about how modern processors work.
+According to Intel's manual for software developers, modern processors have one interesing detail that directly affects visibility of data written to RAM:  
+
+
+<img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/Screenshot%202019-09-07%20at%2010.02.38.png" width="700"/>
+
+**So, stores executed in two phases and after execution phase we can not guarantee that other CPU cores will see updated data**  
+
+But why store buffers were implemented in the first place? Well, modern CPUs have many cores, each core has its own (exclusive) L1 cache and access to multiple shared caches - L2 and L3. Caches are good because they greatly speed up access to data, but at the same time we need to synchronized data in all caches so CPU cores won't see stall data. 
+That's where MESI protocol is used for.
+
+<details>
+  <summary>Protocol MESI explained in details</summary>
 
 - Let's assume:
   - All cpu cores connected via single bus
@@ -93,4 +105,7 @@
           * Value read from memory to local cache 
           * Local copy value updated
           * Local copy state set to M
+</details>  
 
+Well, as you can see, there are a log of things must take place to write single value to RAM, but do we really need it? What if cpu core wants to write value many times and only last one should be promoted to RAM? Store buffers were designed exactly for this situation.
+But 
