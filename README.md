@@ -92,20 +92,3 @@
           * Local copy value updated
           * Local copy state set to M
 
-## x86_64 memory barriers:
-   - LFENCE (Load Fence / combines LoadLoad & LoadStore barriers):
-     - Prevents reordering of reads with subsequent reads and writes
-     - Stalls the execution of all younger loads until the older ones (and the fence itself)  
-       have finished and committed. This will affect performance by serializing the loads,  
-       but would not otherwise protect you against any operation in other cores
-       
-   - SFENCE (Store Fence / StoreStore barrier):
-     - **lock xchg**
-     - Prevents reordering of writes
-     - Flushes the store buffer as they won't allow pending speculative stores to remain  
-       (that's why they're fencing). Once they changes are in L1 they're already observable  
-       by anyone, they don't have to be flushed anywhere further away
-       
-   - MFENCE (Full Fence / LoadStore & StoreStore & LoadLoad & StoreLoad barriers):
-     - **lock addl 0,(sp)**
-     - Full memory fence for all operations on all memory types, whether non-temporal or not
