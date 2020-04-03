@@ -113,3 +113,31 @@ Well, as you can see, there are a lot of things must happen to write single valu
 But we have JLS, JMM and all other stuff that tells us about happens-before, volatile variables behavior. How can we be sure that all visibility rules are strictly followed under all circumstances?
 
 **Let's dig deep into the Hotspot sources to find out how it works!**
+
+But we need to know where to start our journey, right?
+I think we should start with some 'hello world' using volatile variables and see how it will be compiled into bytecode:  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/1.PNG" width="900"/>
+</p>
+
+So, ordinary **putfield** opcode, right?  
+No signs of synchronization whatsoever.  
+Let's find how this opcode is translated by Hotspot interpreter.  
+All opcodes and corresponding generator functions described in **templateTable**:  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/2.PNG" width="900"/>
+</p>
+
+There is a huge table with all opcodes listed:  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/3.PNG" width="900"/>
+</p>
+
+Here is our **putfield** opcode!  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/4.PNG" width="900"/>
+</p>
