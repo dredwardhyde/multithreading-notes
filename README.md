@@ -123,11 +123,11 @@ I think we should start with some 'hello world' using volatile variables and see
 
 So, ordinary **putfield** opcode, right?  
 No signs of synchronization whatsoever.  
-Let's find how this opcode is translated by Hotspot interpreter.  
+Then we need to find out how this opcode is translated by Hotspot interpreter.  
 All opcodes and corresponding generator functions described in **templateTable**:  
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/2.PNG" width="900"/>
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/2.PNG" width="800"/>
 </p>
 
 There is a huge table with all opcodes listed:  
@@ -140,4 +140,10 @@ Here is our **putfield** opcode!
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/4.PNG" width="900"/>
+</p>
+
+Actually, static and non-static fields are written using the same method **putfield_or_static**:  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/5.PNG" width="600"/>
 </p>
