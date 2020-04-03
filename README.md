@@ -1,4 +1,6 @@
-## Protocol MESI explained:
+# How volatile works on hardware level?
+
+### Protocol MESI explained:
 
 - Let's assume:
   - All cpu cores connected via single bus
