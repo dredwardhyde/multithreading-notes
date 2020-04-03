@@ -4,7 +4,9 @@ First of all, let's talk about how modern processors work.
 According to Intel's manual for software developers, modern processors have one interesing detail that directly affects visibility of data written to RAM:  
 
 
-<img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/Screenshot%202019-09-07%20at%2010.02.38.png" width="700"/>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dredwardhyde/multithreading-notes/master/Screenshot%202019-09-07%20at%2010.02.38.png" width="700"/>
+</p>
 
 **So, stores executed in two phases and after execution phase we can not guarantee that other CPU cores will see updated data**  
 
@@ -107,5 +109,7 @@ That's where MESI protocol is used for.
           * Local copy state set to M
 </details>  
 
-Well, as you can see, there are a log of things must take place to write single value to RAM, but do we really need it? What if cpu core wants to write value many times and only last one should be promoted to RAM? Store buffers were designed exactly for this situation.
-But 
+Well, as you can see, there are a lot of things must happen to write single value to RAM, but do we really need it? What if cpu core wants to update variable many times and only last value must be promoted to RAM? Store buffers were designed exactly for this situation.
+But we have JLS, JMM and all other stuff that tells us about happens-before, volatile variables behavior. How can we be sure that all visibility rules are strictly followed under all circumstances?
+
+**Well, let's dig deep into the Hotspot sources to find out how it works!**
